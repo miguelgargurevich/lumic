@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { products } from '@/data/products';
 import { ShieldCheck, Truck, LifeBuoy, ArrowRight } from 'lucide-react';
+import FeaturedCarousel from "@/components/home/FeaturedCarousel";
 
 // Nueva data de prueba para categorías (más moderna y realista)
 const categories = [
@@ -126,41 +127,7 @@ export default function Hero() {
 						<h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold font-headline text-center mb-6 sm:mb-10 md:mb-14">
 							Productos Destacados
 						</h2>
-						<div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 place-items-center">
-							{featuredProducts.map((product) => (
-								<div
-									key={product.id}
-									className="bg-white rounded-2xl shadow-xl flex flex-col items-center border border-muted h-[260px] xs:h-[320px] sm:h-[370px] aspect-[4/5] relative overflow-hidden group hover:scale-105 hover:shadow-2xl transition-all"
-								>
-									<div className="w-full h-[90px] xs:h-[120px] sm:h-[140px] flex items-center justify-center overflow-hidden rounded-xl mt-2 xs:mt-4">
-										<Image
-											src={product.images?.[0] || 'https://placehold.co/300x200.png'}
-											alt={product.name}
-											width={220}
-											height={140}
-											className="object-cover aspect-video group-hover:shadow-2xl transition w-full h-full"
-										/>
-									</div>
-									<div className="flex-1 flex flex-col justify-between w-full px-4 pb-4 pt-2">
-										<h3 className="text-lg font-bold font-headline mb-1 text-center line-clamp-2">
-											{product.name}
-										</h3>
-										<p className="text-muted-foreground text-center mb-2 text-sm line-clamp-2">
-											{product.description}
-										</p>
-										<span className="text-primary font-bold text-xl mb-2 block text-center">
-											${product.price}
-										</span>
-										<Link
-											href={`/products/${product.id}`}
-											className="px-4 xs:px-6 py-2 rounded-full bg-primary text-white font-semibold shadow hover:bg-primary/90 transition-all w-full text-center text-sm sm:text-base"
-										>
-											Ver Detalle
-										</Link>
-									</div>
-								</div>
-							))}
-						</div>
+						<FeaturedCarousel products={featuredProducts} />
 					</div>
 				</section>
 

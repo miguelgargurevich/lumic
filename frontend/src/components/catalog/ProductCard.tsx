@@ -41,6 +41,8 @@ export default function ProductCard({ name, price, image, description, actions }
           loading="lazy"
           sizes="(max-width: 768px) 100vw, 340px"
           priority={false}
+          style={{ width: '100%', height: 'auto', aspectRatio: '340/180' }}
+          objectFit="cover"
         />
         <div className="absolute bottom-0 left-0 w-full px-4 py-2 bg-white/60 backdrop-blur-md flex flex-col items-start gap-1">
           <h3 className="text-lg font-bold text-gray-900 drop-shadow-sm line-clamp-1">{name}</h3>

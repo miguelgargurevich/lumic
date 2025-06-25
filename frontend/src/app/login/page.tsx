@@ -57,7 +57,7 @@ export default function LoginPage() {
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary/10 to-white">
       <div className="w-full max-w-md p-8 bg-white/90 rounded-2xl shadow-2xl border border-primary/20 relative">
         <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
-          <Image src="/globe.svg" alt="Lumic" width={64} height={64} className="w-16 h-16 mb-2 drop-shadow" />
+          <Image src="/globe.svg" alt="Lumic" width={64} height={64} className="w-16 h-16 mb-2 drop-shadow" style={{ width: '64px', height: 'auto', aspectRatio: '1/1' }} objectFit="contain" />
           <span className="text-primary font-extrabold text-2xl tracking-tight drop-shadow">Lumic</span>
         </div>
         <h1 className="text-2xl font-bold mb-6 text-center mt-10">Iniciar sesión</h1>

@@ -59,8 +59,18 @@ export default function Navbar() {
 			</div>
 			<div className="flex items-center gap-2 sm:gap-4">
 				{role !== "admin" && <CartButton />}
-				{role ? (
-					<div className="relative">
+				{/* Botón Login solo visible en desktop */}
+				{!role && (
+					<Link
+						href="/login"
+						className="px-4 py-2 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90 transition-all text-sm hidden md:inline-block"
+					>
+						Login
+					</Link>
+				)}
+				{/* Menú usuario solo visible en desktop */}
+				{role && (
+					<div className="relative hidden md:block">
 						<button
 							className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 hover:bg-primary/20 transition"
 							onClick={() => setShowUserMenu(v => !v)}
@@ -88,7 +98,7 @@ export default function Navbar() {
 												localStorage.removeItem("lumic_token");
 												localStorage.removeItem("lumic_role");
 												localStorage.removeItem("lumic_admin_name");
-												window.location.href = "/login";
+												window.location.href = "/";
 											}}
 										>
 											Cerrar sesión
@@ -98,8 +108,6 @@ export default function Navbar() {
 							</div>
 						)}
 					</div>
-				) : (
-					<Link href="/login" className="px-4 py-2 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90 transition-all text-sm">Login</Link>
 				)}
 				{/* Menú móvil */}
 				<button className="md:hidden ml-1 p-2 rounded-lg hover:bg-primary/10 focus:bg-primary/20 transition" onClick={() => setOpen(true)}>
@@ -127,15 +135,27 @@ export default function Navbar() {
 										</Link>
 									</li>
 								))}
+							{/* Login/Cerrar sesión en menú móvil */}
+							{!role && (
+								<li>
+									<Link
+										href="/login"
+										className="px-4 py-2 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90 transition-all text-sm block text-center"
+										onClick={() => setOpen(false)}
+									>
+										Login
+									</Link>
+								</li>
+							)}
 							{role && (
 								<li>
 									<button
-										className="text-sm text-muted-foreground hover:text-primary underline"
+										className="text-sm text-muted-foreground hover:text-primary underline w-full text-left"
 										onClick={() => {
 											localStorage.removeItem("lumic_token");
 											localStorage.removeItem("lumic_role");
 											localStorage.removeItem("lumic_admin_name");
-											window.location.href = "/login";
+											window.location.href = "/";
 										}}
 									>
 										Cerrar sesión

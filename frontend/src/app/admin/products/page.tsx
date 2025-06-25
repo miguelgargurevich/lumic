@@ -30,6 +30,14 @@ export default function ProductsAdminPage() {
   const [products, setProducts] = useState<Product[]>(demoProducts);
   const pageSize = 2;
 
+  // Detectar si es admin (desde localStorage)
+  const [isAdmin, setIsAdmin] = useState(false);
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsAdmin(localStorage.getItem("lumic_role") === "admin");
+    }
+  }, []);
+
   // Filtros
   const filtered = products.filter(
     p =>
@@ -64,25 +72,34 @@ export default function ProductsAdminPage() {
     <main className="min-h-screen bg-background p-8">
       <div className="max-w-5xl mx-auto bg-white rounded shadow p-8">
         <h2 className="text-2xl font-bold mb-6 text-primary">Mantenimiento de Productos</h2>
-        <div className="flex flex-wrap gap-4 mb-6 items-center">
-          <select
-            className="input input-bordered"
-            value={selectedCategory}
-            onChange={e => setSelectedCategory(e.target.value)}
-          >
-            <option value="">Todas las categorías</option>
-            {categories.map(c => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+        <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:flex-wrap sm:items-center">
+          <div className="flex gap-2 w-full">
+            <select
+              className="input input-bordered flex-1"
+              value={selectedCategory}
+              onChange={e => setSelectedCategory(e.target.value)}
+            >
+              <option value="">Todas las categorías</option>
+              {categories.map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+            {isAdmin && (
+              <button
+                className="btn btn-primary flex-shrink-0"
+                onClick={() => { setEditData(undefined); setModalOpen(true); }}
+              >
+                Agregar producto
+              </button>
+            )}
+          </div>
           <input
             type="text"
             placeholder="Buscar producto..."
-            className="input input-bordered"
+            className="input input-bordered w-full sm:w-auto"
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
-          <button className="btn btn-primary ml-auto" onClick={() => { setEditData(undefined); setModalOpen(true); }}>Agregar producto</button>
         </div>
         <table className="w-full mb-6">
           <thead>
@@ -137,6 +154,16 @@ export default function ProductsAdminPage() {
           initialData={editData}
           categories={categories}
         />
+        {/* FAB para agregar producto en mobile solo para admin */}
+        {isAdmin && (
+          <button
+            className="fixed bottom-5 right-5 z-50 btn btn-primary rounded-full shadow-lg p-0 w-14 h-14 flex items-center justify-center text-3xl md:hidden"
+            onClick={() => { setEditData(undefined); setModalOpen(true); }}
+            aria-label="Agregar producto"
+          >
+            +
+          </button>
+        )}
       </div>
     </main>
   );

@@ -60,61 +60,66 @@ export default function ProductModal({ open, onClose, onSave, initialData, categ
           {initialData ? "Editar producto" : "Agregar producto"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="product-name" className="block text-base font-semibold mb-2 text-gray-900">Nombre</label>
-            <input
-              id="product-name"
-              type="text"
-              placeholder="Nombre del producto"
-              className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-gray-50"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="product-category" className="block text-base font-semibold mb-2 text-gray-900">Categoría</label>
-            <select
-              id="product-category"
-              className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-gray-50"
-              value={category}
-              onChange={e => setCategory(e.target.value)}
-              required
-            >
-              <option value="">Selecciona una categoría</option>
-              {categories.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="product-name" className="block text-base font-semibold mb-2 text-gray-900">Nombre del producto</label>
+              <input
+                id="product-name"
+                type="text"
+                className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-white shadow-sm"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                required
+                aria-describedby="desc-nombre"
+              />
+              <p id="desc-nombre" className="text-xs text-gray-600 mt-2 mb-1">Ejemplo: Lámpara de techo LED</p>
+            </div>
+            <div>
+              <label htmlFor="product-category" className="block text-base font-semibold mb-2 text-gray-900">Categoría</label>
+              <select
+                id="product-category"
+                className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-white shadow-sm"
+                value={category}
+                onChange={e => setCategory(e.target.value)}
+                required
+                aria-describedby="desc-categoria"
+              >
+                <option value="">Selecciona una categoría</option>
+                {categories.map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              <p id="desc-categoria" className="text-xs text-gray-600 mt-2 mb-1">Ejemplo: Lámparas, Tiras LED, etc.</p>
+            </div>
+            <div>
               <label htmlFor="product-price" className="block text-base font-semibold mb-2 text-gray-900">Precio</label>
               <input
                 id="product-price"
                 type="number"
-                placeholder="Precio"
-                className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-gray-50"
+                className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-white shadow-sm"
                 value={price}
                 onChange={e => setPrice(e.target.value)}
                 min={0}
                 step={0.01}
                 required
+                aria-describedby="desc-precio"
               />
+              <p id="desc-precio" className="text-xs text-gray-600 mt-2 mb-1">Ingresa el precio en dólares. Ejemplo: 49.99</p>
             </div>
-            <div className="flex-1">
+            <div>
               <label htmlFor="product-stock" className="block text-base font-semibold mb-2 text-gray-900">Stock</label>
               <input
                 id="product-stock"
                 type="number"
-                placeholder="Stock"
-                className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-gray-50"
+                className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-white shadow-sm"
                 value={stock}
                 onChange={e => setStock(e.target.value)}
                 min={0}
                 step={1}
                 required
+                aria-describedby="desc-stock"
               />
+              <p id="desc-stock" className="text-xs text-gray-600 mt-2 mb-1">Cantidad disponible en inventario.</p>
             </div>
           </div>
           <div>
@@ -124,11 +129,12 @@ export default function ProductModal({ open, onClose, onSave, initialData, categ
               type="file"
               accept="image/*"
               multiple
-              className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-gray-50"
+              className="input input-bordered w-full rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition text-gray-900 bg-white shadow-sm"
               ref={fileInput}
               onChange={handleImageChange}
+              aria-describedby="desc-imagenes"
             />
-            {/* Previsualización de imágenes */}
+            <p id="desc-imagenes" className="text-xs text-gray-600 mt-2 mb-1">Puedes subir una o varias imágenes del producto.</p>
             {preview.length > 0 && (
               <div className="flex gap-3 mt-3 flex-wrap">
                 {preview.map((src, i) => (
