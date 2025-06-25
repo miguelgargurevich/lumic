@@ -11,7 +11,6 @@ export default function FeaturedCarousel({ products }: FeaturedCarouselProps) {
   // Limitar a máximo 10 productos
   const featured = products.slice(0, 10);
   const [idx, setIdx] = useState(0);
-  if (!featured.length) return null;
 
   // Autoplay functionality
   useEffect(() => {
@@ -25,6 +24,8 @@ export default function FeaturedCarousel({ products }: FeaturedCarouselProps) {
   useEffect(() => {
     if (idx >= featured.length) setIdx(0);
   }, [featured.length, idx]);
+
+  if (featured.length === 0) return null;
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-12">
