@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import Image from "next/image";
 import { products as productsData, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
