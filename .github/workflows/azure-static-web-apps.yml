@@ -38,3 +38,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (commenting, PRs)
           action: 'upload'
           app_location: 'frontend'
+          output_location: '.next'
