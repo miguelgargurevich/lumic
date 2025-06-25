@@ -163,14 +163,6 @@ function ProductsPageContent() {
                     ))}
                   </select>
                 </div>
-                {isAdmin && (
-                  <button
-                    className="bg-primary text-white px-4 py-2 rounded font-bold hover:bg-primary/90 transition h-10 mt-6 flex-shrink-0"
-                    onClick={() => { setShowFilters(false); setModal({mode:'create'}); }}
-                  >
-                    + Producto
-                  </button>
-                )}
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Ordenar por</label>
