@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useCart } from "@/context/CartContext";
+import Image from "next/image";
 
 interface CartDrawerProps {
   open: boolean;
@@ -39,7 +40,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
             <ul className="flex-1 overflow-y-auto mb-4 divide-y">
               {cart.map((item, i) => (
                 <li key={i} className="py-3 flex items-center gap-4">
-                  <img src={item.image} alt={item.name} className="w-12 h-12 object-contain rounded" />
+                  <Image src={item.image} alt={item.name} width={48} height={48} className="w-12 h-12 object-contain rounded" />
                   <div className="flex-1">
                     <div className="font-semibold">{item.name}</div>
                     <div className="flex items-center gap-2 mt-1">

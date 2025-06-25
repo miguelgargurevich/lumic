@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { products, type Product } from '@/data/products';
+import { products } from '@/data/products';
 import { ShieldCheck, Truck, LifeBuoy, ArrowRight } from 'lucide-react';
 
 // Nueva data de prueba para categorías (más moderna y realista)
@@ -36,7 +35,6 @@ const categories = [
 
 export default function Hero() {
 	const featuredProducts = products.slice(0, 4);
-	const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
 	return (
 		<>

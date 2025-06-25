@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import Link from "next/link";
+import React, { useState, useRef, Suspense } from "react";
 import Image from "next/image";
 import { products as productsData, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/catalog/ProductCard";
 import type { ProductCardAction } from "@/components/catalog/ProductCard";
 import { useRouter, useSearchParams } from "next/navigation";
-import dynamic from "next/dynamic";
 
 const categories = Array.from(new Set(productsData.map(p => p.category)));
 const sortOptions = [
@@ -21,6 +19,14 @@ const sortOptions = [
 const pageSize = 6;
 
 export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div>Cargando productos...</div>}>
+      <ProductsPageContent />
+    </Suspense>
+  );
+}
+
+function ProductsPageContent() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("az");
@@ -28,7 +34,7 @@ export default function ProductsPage() {
   const [modal, setModal] = useState<null | { mode: 'create' | 'edit' | 'view'; product?: Product }>(null);
   const [allProducts, setAllProducts] = useState<Product[]>(productsData);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [cart, setCart] = useState<Product[]>([]);
+  const [cart] = useState<Product[]>([]);
   const { addToCart } = useCart();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -320,7 +326,6 @@ function ProductForm({ product, categories, onSave, onCancel }: {
     stock: 0,
     description: ""
   });
-  const [files, setFiles] = useState<File[]>([]);
   const dropRef = useRef<HTMLDivElement>(null);
 
   // Drag & drop handlers
@@ -328,7 +333,6 @@ function ProductForm({ product, categories, onSave, onCancel }: {
     e.preventDefault();
     const fileList = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith("image/"));
     if (fileList.length) {
-      setFiles(prev => [...prev, ...fileList]);
       setForm(f => ({ ...f, images: [...f.images, ...fileList.map(f => URL.createObjectURL(f))] }));
     }
   }
@@ -343,7 +347,6 @@ function ProductForm({ product, categories, onSave, onCancel }: {
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const fileList = e.target.files ? Array.from(e.target.files) : [];
-    setFiles(fileList);
     setForm(f => ({ ...f, images: fileList.map(f => URL.createObjectURL(f)) }));
   }
 
@@ -383,7 +386,6 @@ function ProductForm({ product, categories, onSave, onCancel }: {
                 type="button"
                 className="absolute top-1 right-1 bg-white/80 text-red-600 rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-red-500 hover:text-white transition-all opacity-80 group-hover:opacity-100"
                 onClick={() => {
-                  setFiles(files => files.filter((_, idx) => idx !== i));
                   setForm(f => ({ ...f, images: f.images.filter((_, idx) => idx !== i) }));
                 }}
                 aria-label="Eliminar imagen"

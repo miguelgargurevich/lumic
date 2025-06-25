@@ -1,19 +1,31 @@
 "use client";
 import React, { useRef, useState } from "react";
+import Image from "next/image";
+
+import { Product } from "@/data/products";
 
 interface ProductModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (data: any) => void;
-  initialData?: any;
+  onSave: (data: ProductFormData) => void;
+  initialData?: Product;
   categories: string[];
+}
+
+// Definir tipo para el formulario (sin id ni descripción)
+interface ProductFormData {
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  images: File[];
 }
 
 export default function ProductModal({ open, onClose, onSave, initialData, categories }: ProductModalProps) {
   const [name, setName] = useState(initialData?.name || "");
   const [category, setCategory] = useState(initialData?.category || "");
-  const [price, setPrice] = useState(initialData?.price || "");
-  const [stock, setStock] = useState(initialData?.stock || "");
+  const [price, setPrice] = useState(initialData?.price?.toString() || "");
+  const [stock, setStock] = useState(initialData?.stock?.toString() || "");
   const [images, setImages] = useState<File[]>([]);
   const [preview, setPreview] = useState<string[]>(initialData?.images || []);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -90,7 +102,7 @@ export default function ProductModal({ open, onClose, onSave, initialData, categ
             />
             <div className="flex gap-2 mt-2 flex-wrap">
               {preview.map((img, i) => (
-                <img key={i} src={img} alt="preview" className="w-16 h-16 object-cover rounded" />
+                <Image key={i} src={img} alt="preview" width={64} height={64} className="w-16 h-16 object-cover rounded" />
               ))}
             </div>
           </div>

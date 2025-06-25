@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import CartButton from "@/components/cart/CartButton";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const navLinks = [
 	{ href: "/", label: "Inicio", show: () => true },
@@ -38,7 +39,7 @@ export default function Navbar() {
 		<nav className="w-full flex items-center justify-between px-6 py-3 bg-white shadow-sm sticky top-0 z-40 border-b border-primary/10">
 			<div className="flex items-center gap-8">
 				<Link href="/" className="text-2xl font-extrabold text-primary font-poppins tracking-tight flex items-center gap-2">
-					<img src="/globe.svg" alt="Lumic" className="w-7 h-7" />
+					<Image src="/globe.svg" alt="Lumic" width={28} height={28} className="w-7 h-7" />
 					Lumic
 				</Link>
 				<ul className="hidden md:flex gap-4 items-center">

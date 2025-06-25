@@ -1,13 +1,24 @@
 "use client";
 import React, { useState } from "react";
 import ProductModal from "./ProductModal";
+import { Product } from "@/data/products";
+import Image from "next/image";
+
+// Tipo para el formulario (sin id ni description)
+interface ProductFormData {
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  images: File[] | string[];
+}
 
 // Demo de categorías y productos
 const categories = ["Lámparas", "Tiras LED", "Apliques", "Decoración"];
-const demoProducts = [
-  { id: 1, name: "Lámpara Moderna", category: "Lámparas", price: 49.99, images: ["/demo-lamp.png"], stock: 10 },
-  { id: 2, name: "Tira LED RGB", category: "Tiras LED", price: 19.99, images: ["/demo-strip.png"], stock: 25 },
-  { id: 3, name: "Aplique Minimalista", category: "Apliques", price: 34.99, images: ["/demo-wall.png"], stock: 5 },
+const demoProducts: Product[] = [
+  { id: 1, name: "Lámpara Moderna", category: "Lámparas", price: 49.99, images: ["/demo-lamp.png"], stock: 10, description: "" },
+  { id: 2, name: "Tira LED RGB", category: "Tiras LED", price: 19.99, images: ["/demo-strip.png"], stock: 25, description: "" },
+  { id: 3, name: "Aplique Minimalista", category: "Apliques", price: 34.99, images: ["/demo-wall.png"], stock: 5, description: "" },
 ];
 
 export default function ProductsAdminPage() {
@@ -15,8 +26,8 @@ export default function ProductsAdminPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editData, setEditData] = useState<any | null>(null);
-  const [products, setProducts] = useState(demoProducts);
+  const [editData, setEditData] = useState<Product | undefined>(undefined);
+  const [products, setProducts] = useState<Product[]>(demoProducts);
   const pageSize = 2;
 
   // Filtros
@@ -28,13 +39,22 @@ export default function ProductsAdminPage() {
   const paginated = filtered.slice((page - 1) * pageSize, page * pageSize);
   const totalPages = Math.ceil(filtered.length / pageSize);
 
-  const handleSave = (data: any) => {
+  const handleSave = (data: ProductFormData) => {
     if (editData) {
-      setProducts(products.map(p => p.id === editData.id ? { ...p, ...data } : p));
+      setProducts(products.map(p =>
+        p.id === editData.id
+          ? { ...p, ...data, images: (data.images as File[]).map(f => typeof f === "string" ? f : URL.createObjectURL(f)) }
+          : p
+      ));
     } else {
       setProducts([
         ...products,
-        { ...data, id: products.length + 1, images: data.images.map((f: File) => URL.createObjectURL(f)) },
+        {
+          ...data,
+          id: products.length + 1,
+          images: (data.images as File[]).map(f => typeof f === "string" ? f : URL.createObjectURL(f)),
+          description: ""
+        },
       ]);
     }
     setModalOpen(false);
@@ -62,7 +82,7 @@ export default function ProductsAdminPage() {
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
-          <button className="btn btn-primary ml-auto" onClick={() => { setEditData(null); setModalOpen(true); }}>Agregar producto</button>
+          <button className="btn btn-primary ml-auto" onClick={() => { setEditData(undefined); setModalOpen(true); }}>Agregar producto</button>
         </div>
         <table className="w-full mb-6">
           <thead>
@@ -85,7 +105,7 @@ export default function ProductsAdminPage() {
                 <td>
                   <div className="flex gap-2">
                     {p.images.map((img, i) => (
-                      <img key={i} src={img} alt={p.name} className="w-10 h-10 object-contain rounded" />
+                      <Image key={i} src={img} alt={p.name} width={40} height={40} className="w-10 h-10 object-contain rounded" />
                     ))}
                   </div>
                 </td>
