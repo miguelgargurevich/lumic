@@ -30,6 +30,10 @@ jobs:
         run: |
           cd frontend
           npm run build
+      - name: Export static site
+        run: |
+          cd frontend
+          npm run export
       - name: Deploy to Azure Static Web Apps
         id: deploy
         uses: Azure/static-web-apps-deploy@v1
@@ -38,3 +42,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (commenting, PRs)
           action: 'upload'
           app_location: 'frontend'
+          output_location: 'out'
