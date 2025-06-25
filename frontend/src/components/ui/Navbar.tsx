@@ -58,7 +58,7 @@ export default function Navbar() {
 				</ul>
 			</div>
 			<div className="flex items-center gap-2 sm:gap-4">
-				<CartButton />
+				{role !== "admin" && <CartButton />}
 				{role ? (
 					<div className="relative">
 						<button

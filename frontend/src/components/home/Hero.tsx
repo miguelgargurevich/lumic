@@ -81,7 +81,7 @@ export default function Hero() {
 								Elige tu categoría favorita:
 							</p>
 						</div>
-						<div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-10">
+						<div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-10 place-items-center">
 							{categories.map((category) => (
 								<Link
 									href={category.href}
@@ -126,7 +126,7 @@ export default function Hero() {
 						<h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold font-headline text-center mb-6 sm:mb-10 md:mb-14">
 							Productos Destacados
 						</h2>
-						<div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+						<div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 place-items-center">
 							{featuredProducts.map((product) => (
 								<div
 									key={product.id}
