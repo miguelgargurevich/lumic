@@ -7,6 +7,7 @@ import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/catalog/ProductCard";
 import type { ProductCardAction } from "@/components/catalog/ProductCard";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Filter, X } from "lucide-react";
 
 const categories = Array.from(new Set(productsData.map(p => p.category)));
 const sortOptions = [
@@ -39,6 +40,7 @@ function ProductsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showCartMsg, setShowCartMsg] = useState<{name: string}|null>(null);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Sincroniza el estado con los query params
   React.useEffect(() => {
@@ -115,13 +117,74 @@ function ProductsPageContent() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      <div className="flex justify-end mb-4">
-        {/* Quitar toggle manual de admin/usuario */}
+    <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-10">
+      <div className="flex justify-between items-center mb-4 gap-2">
+        <h1 className="text-2xl sm:text-3xl font-bold">Catálogo de productos</h1>
+        {/* Botón para abrir filtros en mobile */}
+        <button
+          className="md:hidden flex items-center gap-2 px-3 py-2 rounded-lg bg-primary text-white font-semibold shadow hover:bg-primary/90 transition"
+          onClick={() => setShowFilters(true)}
+        >
+          <Filter className="w-5 h-5" /> Filtros
+        </button>
       </div>
-      <h1 className="text-3xl font-bold mb-8">Buscar y gestionar productos</h1>
-      {/* Filtros */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8 items-end">
+      {/* Drawer/modal de filtros para mobile */}
+      {showFilters && (
+        <div className="fixed inset-0 z-50 flex items-end md:hidden bg-black/40" onClick={() => setShowFilters(false)}>
+          <div className="bg-white w-full rounded-t-2xl p-6 shadow-lg" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-lg font-bold">Filtrar productos</span>
+              <button onClick={() => setShowFilters(false)}><X className="w-6 h-6" /></button>
+            </div>
+            {/* Filtros en mobile */}
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="block text-sm font-semibold mb-1">Nombre</label>
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => { setSearch(e.target.value); setPage(1); }}
+                  className="w-full border rounded px-3 py-2"
+                  placeholder="Buscar por nombre..."
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-1">Categoría</label>
+                <select
+                  value={category}
+                  onChange={e => { setCategory(e.target.value); setPage(1); }}
+                  className="w-full border rounded px-3 py-2"
+                >
+                  <option value="">Todas</option>
+                  {categories.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-1">Ordenar por</label>
+                <select
+                  value={sort}
+                  onChange={e => { setSort(e.target.value); setPage(1); }}
+                  className="w-full border rounded px-3 py-2"
+                >
+                  {sortOptions.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <button
+              className="mt-6 w-full py-2 rounded-lg bg-primary text-white font-bold shadow hover:bg-primary/90"
+              onClick={() => setShowFilters(false)}
+            >
+              Aplicar filtros
+            </button>
+          </div>
+        </div>
+      )}
+      {/* Filtros siempre visibles en desktop */}
+      <div className="hidden md:flex gap-4 mb-8 items-end">
         <div className="flex-1">
           <label className="block text-sm font-semibold mb-1">Nombre</label>
           <input
@@ -140,13 +203,13 @@ function ProductsPageContent() {
             className="w-full border rounded px-3 py-2"
           >
             <option value="">Todas</option>
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+            {categories.map(c => (
+              <option key={c} value={c}>{c}</option>
             ))}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-semibold mb-1">Relevancia</label>
+          <label className="block text-sm font-semibold mb-1">Ordenar por</label>
           <select
             value={sort}
             onChange={e => { setSort(e.target.value); setPage(1); }}
@@ -163,67 +226,69 @@ function ProductsPageContent() {
       </div>
 
       {/* Listado de productos */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        {paginated.length === 0 && (
-          <div className="col-span-full text-center text-muted-foreground">No hay productos para mostrar.</div>
-        )}
-        {paginated.map(product => {
-          const actions: ProductCardAction[] = isAdmin
-            ? [
-                {
-                  label: "Ver",
-                  type: "view",
-                  onClick: () => setModal({ mode: "view", product }),
-                  icon: (
-                    <svg xmlns='http://www.w3.org/2000/svg' className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' /><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' /></svg>
-                  ),
-                },
-                {
-                  label: "Editar",
-                  type: "edit",
-                  onClick: () => setModal({ mode: "edit", product }),
-                  icon: (
-                    <svg xmlns='http://www.w3.org/2000/svg' className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15.232 5.232l3.536 3.536M9 13h3l8-8a2.828 2.828 0 10-4-4l-8 8v3z' /><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M16 7l-1.5-1.5' /></svg>
-                  ),
-                },
-                {
-                  label: "Eliminar",
-                  type: "delete",
-                  onClick: () => handleDelete(product.id),
-                  icon: (
-                    <svg xmlns='http://www.w3.org/2000/svg' className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' /></svg>
-                  ),
-                },
-              ]
-            : [
-                {
-                  label: "Ver detalles",
-                  type: "view",
-                  onClick: () => setModal({ mode: "view", product }),
-                  icon: (
-                    <svg xmlns='http://www.w3.org/2000/svg' className='w-5 h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' /><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' /></svg>
-                  ),
-                },
-                {
-                  label: "Agregar al carrito",
-                  type: "add",
-                  onClick: () => handleAddToCart(product),
-                  icon: (
-                    <svg xmlns='http://www.w3.org/2000/svg' className='w-5 h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7A2 2 0 007.6 19h8.8a2 2 0 001.95-2.3L17 13M7 13V6a1 1 0 011-1h3m4 0h2a1 1 0 011 1v7' /></svg>
-                  ),
-                },
-              ] as ProductCardAction[];
-          return (
-            <ProductCard
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              image={product.images[0]}
-              description={product.description}
-              actions={actions}
-            />
-          );
-        })}
+      <div className="w-full flex justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 w-full max-w-6xl mx-auto place-items-center">
+          {paginated.length === 0 && (
+            <div className="col-span-full text-center text-muted-foreground">No hay productos para mostrar.</div>
+          )}
+          {paginated.map(product => {
+            const actions: ProductCardAction[] = isAdmin
+              ? [
+                  {
+                    label: "Ver",
+                    type: "view",
+                    onClick: () => setModal({ mode: "view", product }),
+                    icon: (
+                      <svg xmlns='http://www.w3.org/2000/svg' className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' /><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' /></svg>
+                    ),
+                  },
+                  {
+                    label: "Editar",
+                    type: "edit",
+                    onClick: () => setModal({ mode: "edit", product }),
+                    icon: (
+                      <svg xmlns='http://www.w3.org/2000/svg' className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15.232 5.232l3.536 3.536M9 13h3l8-8a2.828 2.828 0 10-4-4l-8 8v3z' /><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M16 7l-1.5-1.5' /></svg>
+                    ),
+                  },
+                  {
+                    label: "Eliminar",
+                    type: "delete",
+                    onClick: () => handleDelete(product.id),
+                    icon: (
+                      <svg xmlns='http://www.w3.org/2000/svg' className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' /></svg>
+                    ),
+                  },
+                ]
+              : [
+                  {
+                    label: "Ver detalles",
+                    type: "view",
+                    onClick: () => setModal({ mode: "view", product }),
+                    icon: (
+                      <svg xmlns='http://www.w3.org/2000/svg' className='w-5 h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' /><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' /></svg>
+                    ),
+                  },
+                  {
+                    label: "Agregar al carrito",
+                    type: "add",
+                    onClick: () => handleAddToCart(product),
+                    icon: (
+                      <svg xmlns='http://www.w3.org/2000/svg' className='w-5 h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7A2 2 0 007.6 19h8.8a2 2 0 001.95-2.3L17 13M7 13V6a1 1 0 011-1h3m4 0h2a1 1 0 011 1v7' /></svg>
+                    ),
+                  },
+                ] as ProductCardAction[];
+            return (
+              <ProductCard
+                key={product.id}
+                name={product.name}
+                price={product.price}
+                image={product.images[0]}
+                description={product.description}
+                actions={actions}
+              />
+            );
+          })}
+        </div>
       </div>
 
       {/* Paginado visual mejorado */}

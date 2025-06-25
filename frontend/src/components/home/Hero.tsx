@@ -40,7 +40,7 @@ export default function Hero() {
 		<>
 			<div className="flex flex-col relative">
 				{/* Hero Section - Visual impact, gradient, glassmorphism, CTA */}
-				<section className="relative h-[80vh] w-full flex items-center justify-center text-center text-white overflow-hidden border-b-8 border-primary/70 shadow-xl mb-0 focus-within:ring-4 focus-within:ring-primary/40">
+				<section className="relative h-[60vh] sm:h-[80vh] w-full flex items-center justify-center text-center text-white overflow-hidden border-b-8 border-primary/70 shadow-xl mb-0 focus-within:ring-4 focus-within:ring-primary/40">
 					<Image
 						src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80"
 						alt="Ambiente iluminado moderno con productos Lumic"
@@ -51,17 +51,17 @@ export default function Hero() {
 					/>
 					<div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/30 to-transparent z-0" aria-hidden="true" />
 					<div className="z-10 container mx-auto px-4 flex flex-col items-center justify-center h-full">
-						<h1 className="text-5xl md:text-7xl font-extrabold font-headline drop-shadow-2xl mb-6 tracking-tight animate-fade-in-up focus:outline-none focus:ring-4 focus:ring-primary/40">
+						<h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-7xl font-extrabold font-headline drop-shadow-2xl mb-4 sm:mb-6 tracking-tight animate-fade-in-up focus:outline-none focus:ring-4 focus:ring-primary/40">
 							Ilumina Tu Mundo con{' '}
 							<span className="text-primary">LUMIC</span>
 						</h1>
-						<p className="text-xl md:text-2xl mb-10 max-w-2xl mx-auto drop-shadow-lg animate-fade-in-up delay-100">
+						<p className="text-base xs:text-lg sm:text-xl md:text-2xl mb-6 sm:mb-10 max-w-xs xs:max-w-md sm:max-w-2xl mx-auto drop-shadow-lg animate-fade-in-up delay-100">
 							Tecnología, diseño y calidez para cada espacio. Vive la experiencia
 							de la mejor iluminación.
 						</p>
 						<Link
 							href="/products"
-							className="inline-block px-10 py-4 rounded-full bg-primary text-white font-bold text-lg shadow-lg hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary/40 transition-all animate-fade-in-up delay-200 animate-pulse hover:scale-105 active:scale-95"
+							className="inline-block px-6 sm:px-10 py-3 sm:py-4 rounded-full bg-primary text-white font-bold text-base sm:text-lg shadow-lg hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary/40 transition-all animate-fade-in-up delay-200 animate-pulse hover:scale-105 active:scale-95"
 							tabIndex={0}
 							aria-label="Explorar productos Lumic"
 						>
@@ -71,17 +71,17 @@ export default function Hero() {
 				</section>
 
 				{/* Categorías - Cards igualados y rediseñados (debajo del hero) */}
-				<section className="py-12 md:py-16 bg-background border-b-8 border-muted/40">
+				<section className="py-8 xs:py-10 md:py-16 bg-background border-b-8 border-muted/40">
 					<div className="container mx-auto px-4">
 						<div className="text-center mb-10 md:mb-14">
-							<h2 className="text-4xl md:text-5xl font-extrabold font-headline mb-2">
+							<h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold font-headline mb-2">
 								Categorías
 							</h2>
-							<p className="text-lg text-muted-foreground">
+							<p className="text-base sm:text-lg text-muted-foreground">
 								Elige tu categoría favorita:
 							</p>
 						</div>
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+						<div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-10">
 							{categories.map((category) => (
 								<Link
 									href={category.href}
@@ -89,7 +89,7 @@ export default function Hero() {
 									className="group block h-full focus:outline-none focus:ring-4 focus:ring-primary/40"
 									aria-label={`Ver productos de la categoría ${category.name}`}
 								>
-									<div className="relative flex flex-col justify-end overflow-hidden rounded-2xl shadow-xl h-[320px] aspect-[4/3] bg-white/95 border border-muted group-hover:scale-105 group-hover:shadow-2xl group-active:scale-95 transition-all animate-fade-in-up">
+									<div className="relative flex flex-col justify-end overflow-hidden rounded-2xl shadow-xl h-[220px] xs:h-[260px] sm:h-[320px] aspect-[4/3] bg-white/95 border border-muted group-hover:scale-105 group-hover:shadow-2xl group-active:scale-95 transition-all animate-fade-in-up">
 										<Image
 											src={category.imageSrc}
 											alt={category.imageHint}
@@ -121,21 +121,18 @@ export default function Hero() {
 				</section>
 
 				{/* Featured Products - Modern cards, hover, shadow, CTA */}
-				<section
-					className="py-16 md:py-20 bg-gradient-to-b from-muted/60 to-background"
-					id="catalogo"
-				>
+				<section className="py-10 xs:py-12 md:py-16 bg-gradient-to-b from-muted/60 to-background" id="catalogo">
 					<div className="container mx-auto px-4">
-						<h2 className="text-4xl md:text-5xl font-extrabold font-headline text-center mb-10 md:mb-14">
+						<h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold font-headline text-center mb-6 sm:mb-10 md:mb-14">
 							Productos Destacados
 						</h2>
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+						<div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
 							{featuredProducts.map((product) => (
 								<div
 									key={product.id}
-									className="bg-white rounded-2xl shadow-xl flex flex-col items-center border border-muted h-[370px] aspect-[4/5] relative overflow-hidden group hover:scale-105 hover:shadow-2xl transition-all"
+									className="bg-white rounded-2xl shadow-xl flex flex-col items-center border border-muted h-[260px] xs:h-[320px] sm:h-[370px] aspect-[4/5] relative overflow-hidden group hover:scale-105 hover:shadow-2xl transition-all"
 								>
-									<div className="w-full h-[140px] flex items-center justify-center overflow-hidden rounded-xl mt-4">
+									<div className="w-full h-[90px] xs:h-[120px] sm:h-[140px] flex items-center justify-center overflow-hidden rounded-xl mt-2 xs:mt-4">
 										<Image
 											src={product.images?.[0] || 'https://placehold.co/300x200.png'}
 											alt={product.name}
@@ -156,7 +153,7 @@ export default function Hero() {
 										</span>
 										<Link
 											href={`/products/${product.id}`}
-											className="px-6 py-2 rounded-full bg-primary text-white font-semibold shadow hover:bg-primary/90 transition-all w-full text-center"
+											className="px-4 xs:px-6 py-2 rounded-full bg-primary text-white font-semibold shadow hover:bg-primary/90 transition-all w-full text-center text-sm sm:text-base"
 										>
 											Ver Detalle
 										</Link>
