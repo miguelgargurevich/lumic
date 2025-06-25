@@ -38,5 +38,3 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (commenting, PRs)
           action: 'upload'
           app_location: 'frontend'
-          output_location: '' # Azure detecta Next.js automáticamente
-          skip_app_build: true # Ya hicimos build arriba
