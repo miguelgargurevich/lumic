@@ -27,11 +27,12 @@ export default function ProductsPage() {
   const [page, setPage] = useState(1);
   const [modal, setModal] = useState<null | { mode: 'create' | 'edit' | 'view'; product?: Product }>(null);
   const [allProducts, setAllProducts] = useState<Product[]>(productsData);
-  const [isAdmin, setIsAdmin] = useState(false); // Toggle de rol
+  const [isAdmin, setIsAdmin] = useState(false);
   const [cart, setCart] = useState<Product[]>([]);
   const { addToCart } = useCart();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [showCartMsg, setShowCartMsg] = useState<{name: string}|null>(null);
 
   // Sincroniza el estado con los query params
   React.useEffect(() => {
@@ -89,17 +90,28 @@ export default function ProductsPage() {
       price: product.price,
       image: product.images[0] || '',
     });
+    setShowCartMsg({ name: product.name });
+    setTimeout(() => setShowCartMsg(null), 2500);
   }
+
+  // Detectar rol real desde localStorage
+  React.useEffect(() => {
+    function syncRole() {
+      setIsAdmin(typeof window !== "undefined" && localStorage.getItem("lumic_role") === "admin");
+    }
+    syncRole();
+    window.addEventListener("storage", syncRole);
+    window.addEventListener("lumic_role_changed", syncRole);
+    return () => {
+      window.removeEventListener("storage", syncRole);
+      window.removeEventListener("lumic_role_changed", syncRole);
+    };
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-10">
       <div className="flex justify-end mb-4">
-        <button
-          className={`px-4 py-2 rounded font-bold border ${isAdmin ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700'}`}
-          onClick={() => setIsAdmin(v => !v)}
-        >
-          {isAdmin ? 'Modo Admin' : 'Modo Usuario'}
-        </button>
+        {/* Quitar toggle manual de admin/usuario */}
       </div>
       <h1 className="text-3xl font-bold mb-8">Buscar y gestionar productos</h1>
       {/* Filtros */}
@@ -279,6 +291,13 @@ export default function ProductsPage() {
       {cart.length > 0 && (
         <div className="fixed bottom-6 right-6 z-50 bg-primary text-white px-6 py-3 rounded-full shadow-lg animate-fade-in-up">
           {cart.length} producto{cart.length > 1 ? 's' : ''} en el carrito
+        </div>
+      )}
+      {/* Mensaje flotante de agregado al carrito */}
+      {showCartMsg && (
+        <div className="fixed bottom-6 right-6 z-50 bg-green-500/80 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm animate-fade-in-up flex items-center gap-2">
+          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+          <span>Producto <b>{showCartMsg.name}</b> agregado al carrito</span>
         </div>
       )}
     </div>

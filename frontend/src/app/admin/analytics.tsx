@@ -102,52 +102,53 @@ export default function AdminAnalytics() {
 	};
 
 	return (
-		<div className="max-w-3xl mx-auto p-8">
-			<h1 className="text-2xl font-bold mb-6">Panel de Analítica</h1>
-			<div className="mb-6 flex gap-4 items-center">
-				<label className="font-semibold">
-					Desde:
-					<input
-						type="date"
-						value={fechaInicio}
-						onChange={(e) => setFechaInicio(e.target.value)}
-						className="ml-2 border rounded px-2 py-1"
-					/>
-				</label>
-				<label className="font-semibold">
-					Hasta:
-					<input
-						type="date"
-						value={fechaFin}
-						onChange={(e) => setFechaFin(e.target.value)}
-						className="ml-2 border rounded px-2 py-1"
-					/>
-				</label>
-			</div>
-			<div className="mb-10 bg-white rounded-xl shadow p-6">
-				<h2 className="text-lg font-semibold mb-4">Ventas por producto</h2>
-				<Bar data={barData} />
-			</div>
-			<div className="mb-10 bg-white rounded-xl shadow p-6">
-				<h2 className="text-lg font-semibold mb-4">
-					Productos con stock bajo
-				</h2>
-				<Pie data={pieData} />
-			</div>
-			<div className="mb-10 bg-white rounded-xl shadow p-6">
-				<h2 className="text-lg font-semibold mb-4">
-					Producto más vendido en el rango
-				</h2>
-				<div className="text-center text-xl font-bold text-green-600">
-					{masVendido.nombre} ({masVendido.total} ventas)
+		<div className="max-w-5xl mx-auto p-8">
+			<div className="flex flex-col gap-10">
+				<div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between items-center">
+					<h2 className="text-lg font-semibold mb-4">Ventas por producto</h2>
+					<div className="w-full max-w-md mx-auto">
+						<Bar data={barData} options={{ maintainAspectRatio: false, aspectRatio: 2 }} height={260} />
+					</div>
 				</div>
-			</div>
-			<div className="bg-white rounded-xl shadow p-6">
-				<h2 className="text-lg font-semibold mb-4">
-					Producto menos vendido en el rango
-				</h2>
-				<div className="text-center text-xl font-bold text-red-600">
-					{menosVendido.nombre} ({menosVendido.total} ventas)
+				<div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between items-center">
+					<h2 className="text-lg font-semibold mb-4">Productos con stock bajo</h2>
+					<div className="w-full max-w-md mx-auto">
+						<Pie data={pieData} options={{ maintainAspectRatio: false, aspectRatio: 2 }} height={260} />
+					</div>
+				</div>
+				<div className="flex flex-col md:flex-row gap-8">
+					<div className="flex-1 bg-green-50 rounded-xl shadow p-6 flex flex-col items-center mb-4 md:mb-0">
+						<h2 className="text-lg font-semibold mb-2 text-green-700">Más vendido en el rango</h2>
+						<div className="text-center text-2xl font-bold text-green-700">
+							{masVendido.nombre} <span className="text-base">({masVendido.total} ventas)</span>
+						</div>
+					</div>
+					<div className="flex-1 bg-red-50 rounded-xl shadow p-6 flex flex-col items-center">
+						<h2 className="text-lg font-semibold mb-2 text-red-700">Menos vendido en el rango</h2>
+						<div className="text-center text-2xl font-bold text-red-700">
+							{menosVendido.nombre} <span className="text-base">({menosVendido.total} ventas)</span>
+						</div>
+					</div>
+				</div>
+				<div className="mb-6 flex gap-4 items-center justify-center">
+					<label className="font-semibold">
+						Desde:
+						<input
+							type="date"
+							value={fechaInicio}
+							onChange={(e) => setFechaInicio(e.target.value)}
+							className="ml-2 border rounded px-2 py-1"
+						/>
+					</label>
+					<label className="font-semibold">
+						Hasta:
+						<input
+							type="date"
+							value={fechaFin}
+							onChange={(e) => setFechaFin(e.target.value)}
+							className="ml-2 border rounded px-2 py-1"
+						/>
+					</label>
 				</div>
 			</div>
 		</div>
