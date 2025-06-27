@@ -15,9 +15,9 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   function handleCheckout() {
-    alert('¡Gracias por tu compra! (flujo demo)');
-    clearCart();
+    // Redirige a la página de checkout
     onClose();
+    window.location.href = "/checkout";
   } 
  
   return (
@@ -96,7 +96,9 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
               >
                 Vaciar
               </button>
-              <button className="w-1/2 py-3 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90 transition" onClick={handleCheckout}>Finalizar compra</button>
+              <button className="w-1/2 py-3 rounded-xl bg-primary/10 text-primary font-bold shadow hover:bg-primary/20 transition border-2 border-primary" onClick={handleCheckout}>
+                Finalizar compra
+              </button>
             </div>
           </>
         )}

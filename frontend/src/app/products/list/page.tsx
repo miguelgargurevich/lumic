@@ -120,22 +120,18 @@ function ProductsPageContent() {
   }, []);
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-10">
-      {/* Header moderno con fondo y sombra */}
-      <section className="relative bg-gradient-to-br from-primary/10 to-white rounded-3xl shadow-xl border border-primary/10 p-6 sm:p-10 mb-8 flex flex-col items-center text-center w-full max-w-none mx-0 overflow-hidden">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-primary mb-4 drop-shadow-lg tracking-tight">Catálogo de productos</h1>
-        <p className="text-lg sm:text-xl text-muted-foreground mb-2 font-medium">
-          Explora nuestra selección de productos de iluminación: aros LED, luminarias, tiras LED y accesorios. 
-        </p>
-        <p className="text-base text-muted-foreground mb-2">
-          Utiliza los filtros para encontrar el producto ideal según tus necesidades y presupuesto. Haz clic en cada producto para ver más detalles o agregarlo al carrito.
-        </p>
-        <div className="absolute -top-10 -right-10 opacity-10 pointer-events-none select-none hidden sm:block">
-          <svg width="180" height="180" viewBox="0 0 180 180" fill="none"><circle cx="90" cy="90" r="90" fill="#3B82F6" /></svg>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-white flex flex-col px-4 sm:px-0 py-8 sm:p-8">
+      {/* Header refinado: igual al de catalog-welcome, sin fondo degradado */}
+      <section className="relative shadow-none border-none p-0 mb-8 flex flex-col items-center text-center w-full max-w-none mx-0 overflow-hidden animate-fade-in bg-transparent">
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-primary mb-4 mt-4 sm:mb-8 sm:mt-8 text-center drop-shadow-lg">
+				Bienvenido al Catálogo Lumic
+			</h1>
+			<p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-2xl text-center px-4">
+				Descubre la mejor selección de productos de iluminación para cada
+				necesidad. Elige una categoría y explora opciones modernas, eficientes
+				y con la mejor calidad. ¡Haz brillar tus espacios con Lumic!
+			</p>
       </section>
-
-
 
       <div className="flex justify-between items-center mb-4 gap-2">
         <h1 className="text-2xl sm:text-3xl font-bold">Catálogo de productos</h1>
@@ -247,7 +243,7 @@ function ProductsPageContent() {
       </div>
 
       {/* Descripción de filtros activos */}
-      <div className="mb-4 text-left text-sm min-h-[24px] px-3 py-2 rounded-xl font-medium bg-primary/10 text-primary border border-primary/20 shadow-sm flex items-center gap-2 flex-wrap">
+      <div className="mb-6 text-left text-sm min-h-[24px] px-5 py-4 rounded-xl font-medium bg-primary/10 text-primary border border-primary/20 shadow-sm flex items-center gap-3 flex-wrap">
         <div className="flex-1">
           {search || category || sort !== 'az' ? (
             <>
@@ -269,7 +265,7 @@ function ProductsPageContent() {
         </div>
         {(search || category || sort !== 'az') && (
           <button
-            className="ml-auto px-3 py-1 rounded-lg bg-primary text-white font-semibold text-xs shadow hover:bg-primary/90 transition-all"
+            className="ml-auto px-4 py-2 rounded-lg bg-primary text-white font-semibold text-xs shadow hover:bg-primary/90 transition-all"
             onClick={() => { setSearch(''); setCategory(''); setSort('az'); setPage(1); }}
             aria-label="Limpiar filtros"
           >
@@ -280,7 +276,7 @@ function ProductsPageContent() {
 
       {/* Listado de productos */}
       <div className="w-full flex justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 w-full max-w-6xl mx-auto place-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16 w-full max-w-6xl mx-auto place-items-center bg-transparent">
           {paginated.length === 0 && (
             <div className="col-span-full text-center text-muted-foreground">No hay productos para mostrar.</div>
           )}
@@ -396,13 +392,15 @@ function ProductsPageContent() {
                   <div className="mb-1"><b>Stock:</b> {modal.product.stock}</div>
                   <div className="mb-1 col-span-2"><b>Descripción:</b> {modal.product.description}</div>
                 </div>
-                <button
-                  className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-bold shadow-md hover:bg-primary/90 transition border border-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/40 inline-flex items-center gap-2 justify-center w-full text-base"
-                  onClick={() => modal.product && handleAddToCart(modal.product)}
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  Agregar al carrito
-                </button>
+                {!isAdmin && (
+                  <button
+                    className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-bold shadow-md hover:bg-primary/90 transition border border-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/40 inline-flex items-center gap-2 justify-center w-full text-base"
+                    onClick={() => modal.product && handleAddToCart(modal.product)}
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    Agregar al carrito
+                  </button>
+                )}
               </div>
             )}
             {(modal.mode === 'edit' || modal.mode === 'create') && (
@@ -418,7 +416,7 @@ function ProductsPageContent() {
         </div>
       )}
       {/* Botón flotante para agregar producto en mobile solo para admin */}
-      {isAdmin && (
+      {isAdmin && (!modal || (modal.mode !== 'create' && modal.mode !== 'edit')) && (
         <button
           className="fixed bottom-5 right-5 z-50 bg-primary text-white rounded-full shadow-lg w-14 h-14 flex items-center justify-center text-3xl md:hidden"
           onClick={() => setModal({mode:'create'})}

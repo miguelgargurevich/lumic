@@ -13,6 +13,7 @@ export default function FeaturedCarousel({ products }: FeaturedCarouselProps) {
   const featured = products.slice(0, 10);
   const [idx, setIdx] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // Autoplay functionality
   useEffect(() => {
@@ -26,6 +27,19 @@ export default function FeaturedCarousel({ products }: FeaturedCarouselProps) {
   useEffect(() => {
     if (idx >= featured.length) setIdx(0);
   }, [featured.length, idx]);
+
+  useEffect(() => {
+    function syncRole() {
+      setIsAdmin(typeof window !== "undefined" && localStorage.getItem("lumic_role") === "admin");
+    }
+    syncRole();
+    window.addEventListener("storage", syncRole);
+    window.addEventListener("lumic_role_changed", syncRole);
+    return () => {
+      window.removeEventListener("storage", syncRole);
+      window.removeEventListener("lumic_role_changed", syncRole);
+    };
+  }, []);
 
   if (featured.length === 0) return null;
 
@@ -81,6 +95,7 @@ export default function FeaturedCarousel({ products }: FeaturedCarouselProps) {
               price={featured[idx].price}
               image={featured[idx].images[0]}
               description={featured[idx].description}
+              isAdmin={isAdmin}
             />
           )}
         </div>

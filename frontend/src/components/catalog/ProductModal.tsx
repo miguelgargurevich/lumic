@@ -10,9 +10,10 @@ interface ProductModalProps {
   price: number;
   image: string;
   description: string;
+  isAdmin?: boolean;
 }
 
-export default function ProductModal({ open, onClose, name, price, image, description }: ProductModalProps) {
+export default function ProductModal({ open, onClose, name, price, image, description, isAdmin }: ProductModalProps) {
   const { addToCart } = useCart();
   if (!open) return null;
   return (
@@ -34,17 +35,19 @@ export default function ProductModal({ open, onClose, name, price, image, descri
             <div className="mb-1 col-span-2"><b>Precio:</b> <span className="font-bold text-primary">${price.toFixed(2)}</span></div>
             <div className="mb-1 col-span-2"><b>Descripción:</b> {description}</div>
           </div>
-          <button
-            className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-bold shadow-md hover:bg-primary/90 transition border border-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/40 inline-flex items-center gap-2 justify-center w-full text-base"
-            onClick={() => {
-              addToCart({ name, price, image });
-              toast.success("Producto agregado al carrito", { description: name });
-              onClose();
-            }}
-          >
-            <ShoppingCart className="w-5 h-5" />
-            Agregar al carrito
-          </button>
+          {!isAdmin && (
+            <button
+              className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-bold shadow-md hover:bg-primary/90 transition border border-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/40 inline-flex items-center gap-2 justify-center w-full text-base"
+              onClick={() => {
+                addToCart({ name, price, image });
+                toast.success("Producto agregado al carrito", { description: name });
+                onClose();
+              }}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              Agregar al carrito
+            </button>
+          )}
         </div>
       </div>
     </div>
