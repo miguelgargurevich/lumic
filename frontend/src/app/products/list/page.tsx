@@ -38,7 +38,6 @@ function ProductsPageContent() {
   const [modal, setModal] = useState<null | { mode: 'create' | 'edit' | 'view'; product?: Product }>(null);
   const [allProducts, setAllProducts] = useState<Product[]>(productsData);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [cart] = useState<Product[]>([]);
   const { addToCart } = useCart();
   const router = useRouter();
   const searchParams = useSearchParams();

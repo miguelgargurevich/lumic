@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import type { Product } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductModal from "@/components/catalog/ProductModal";

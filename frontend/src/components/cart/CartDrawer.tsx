@@ -3,6 +3,7 @@ import React from "react";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
 
 interface CartDrawerProps {
   open: boolean;
@@ -84,7 +85,17 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
               <span>${total.toFixed(2)}</span>
             </div>
             <div className="flex gap-2">
-              <button className="w-1/2 py-3 rounded-xl border-2 border-primary text-primary font-bold bg-white shadow hover:bg-primary/10 transition" onClick={clearCart}>Vaciar</button>
+              <button
+                className="w-1/2 py-3 rounded-xl border-2 border-primary text-primary font-bold bg-white shadow hover:bg-primary/10 transition"
+                onClick={() => {
+                  if (window.confirm("¿Estás seguro que deseas vaciar el carrito?")) {
+                    clearCart();
+                    toast.success("Carrito sin artículos");
+                  }
+                }}
+              >
+                Vaciar
+              </button>
               <button className="w-1/2 py-3 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90 transition" onClick={handleCheckout}>Finalizar compra</button>
             </div>
           </>
