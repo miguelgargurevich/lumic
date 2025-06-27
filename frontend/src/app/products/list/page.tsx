@@ -8,7 +8,7 @@ import ProductCard from "@/components/catalog/ProductCard";
 import type { ProductCardAction } from "@/components/catalog/ProductCard";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Filter, X } from "lucide-react";
-import ProductModalForm from "../ProductModalForm";
+import ProductModal from "@/app/admin/products/ProductModal";
 import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 
@@ -133,7 +133,7 @@ function ProductsPageContent() {
 			</p>
       </section>
 
-      <div className="flex justify-between items-center mb-4 gap-2">
+      <div className="flex justify-between items-center mb-8 gap-4 px-2 sm:px-6">
         <h1 className="text-2xl sm:text-3xl font-bold">Catálogo de productos</h1>
         {/* Botón para abrir filtros en mobile */}
         <button
@@ -201,49 +201,85 @@ function ProductsPageContent() {
         </div>
       )}
       {/* Filtros siempre visibles en desktop */}
-      <div className="hidden md:flex gap-4 mb-8 items-end">
-        <div className="flex-1">
-          <label className="block text-sm font-semibold mb-1">Nombre</label>
-          <input
-            type="text"
-            value={search}
-            onChange={e => { setSearch(e.target.value); setPage(1); }}
-            className="w-full border rounded px-3 py-2"
-            placeholder="Buscar por nombre..."
-          />
+      <div className="hidden md:flex flex-col gap-4 mb-10 px-2 sm:px-6">
+        <div className="flex gap-6 items-end">
+          <div className="flex-1">
+            <label className="block text-sm font-semibold mb-1">Nombre</label>
+            <input
+              type="text"
+              value={search}
+              onChange={e => { setSearch(e.target.value); setPage(1); }}
+              className="w-full border rounded px-4 py-2"
+              placeholder="Buscar por nombre..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-1">Categoría</label>
+            <select
+              value={category}
+              onChange={e => { setCategory(e.target.value); setPage(1); }}
+              className="w-full border rounded px-4 py-2"
+            >
+              <option value="">Todas</option>
+              {categories.map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-1">Ordenar por</label>
+            <select
+              value={sort}
+              onChange={e => { setSort(e.target.value); setPage(1); }}
+              className="w-full border rounded px-4 py-2"
+            >
+              {sortOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
+          {isAdmin && (
+            <button className="bg-primary text-white px-8 py-2 rounded font-bold hover:bg-primary/90 transition flex items-center gap-2" onClick={() => setModal({mode:'create'})}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+              Nuevo producto
+            </button>
+          )}
         </div>
-        <div>
-          <label className="block text-sm font-semibold mb-1">Categoría</label>
-          <select
-            value={category}
-            onChange={e => { setCategory(e.target.value); setPage(1); }}
-            className="w-full border rounded px-3 py-2"
-          >
-            <option value="">Todas</option>
-            {categories.map(c => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+        {/* Panel de filtros activos solo en desktop */}
+        <div className="text-left text-sm min-h-[24px] px-0 py-3 rounded-2xl font-medium flex items-center gap-4 flex-wrap w-full">
+          <div className="flex-1">
+            {search || category || sort !== 'az' ? (
+              <>
+                <span className="font-semibold">Mostrando</span>
+                {category && (
+                  <> productos de <span className="font-bold underline underline-offset-2">{category}</span></>
+                )}
+                {search && (
+                  <> que coinciden con <span className="font-bold">&quot;{search}&quot;</span></>
+                )}
+                {sort !== 'az' && (
+                  <> ordenados por <span className="font-bold">{sortOptions.find(opt => opt.value === sort)?.label}</span></>
+                )}
+                .
+              </>
+            ) : (
+              <>Mostrando todos los productos.</>
+            )}
+          </div>
+          {(search || category || sort !== 'az') && (
+            <button
+              className="ml-auto px-5 py-2 rounded-lg bg-primary text-white font-semibold text-xs shadow hover:bg-primary/90 transition-all flex items-center gap-2"
+              onClick={() => { setSearch(''); setCategory(''); setSort('az'); setPage(1); }}
+              aria-label="Limpiar filtros"
+            >
+              <X className="w-4 h-4" />
+              Limpiar filtros
+            </button>
+          )}
         </div>
-        <div>
-          <label className="block text-sm font-semibold mb-1">Ordenar por</label>
-          <select
-            value={sort}
-            onChange={e => { setSort(e.target.value); setPage(1); }}
-            className="w-full border rounded px-3 py-2"
-          >
-            {sortOptions.map(opt => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
-            ))}
-          </select>
-        </div>
-        {isAdmin && (
-          <button className="bg-primary text-white px-6 py-2 rounded font-bold hover:bg-primary/90 transition" onClick={() => setModal({mode:'create'})}>Nuevo producto</button>
-        )}
       </div>
-
-      {/* Descripción de filtros activos */}
-      <div className="mb-6 text-left text-sm min-h-[24px] px-5 py-4 rounded-xl font-medium bg-primary/10 text-primary border border-primary/20 shadow-sm flex items-center gap-3 flex-wrap">
+      {/* Panel de filtros activos en mobile (fuera del panel de filtros) */}
+      <div className="md:hidden mb-10 text-left text-sm min-h-[24px] px-2 sm:px-6 py-5 rounded-2xl font-medium bg-primary/10 text-primary border border-primary/20 shadow-sm flex items-center gap-4 flex-wrap w-full mx-auto">
         <div className="flex-1">
           {search || category || sort !== 'az' ? (
             <>
@@ -265,7 +301,7 @@ function ProductsPageContent() {
         </div>
         {(search || category || sort !== 'az') && (
           <button
-            className="ml-auto px-4 py-2 rounded-lg bg-primary text-white font-semibold text-xs shadow hover:bg-primary/90 transition-all"
+            className="ml-auto px-5 py-2 rounded-lg bg-primary text-white font-semibold text-xs shadow hover:bg-primary/90 transition-all"
             onClick={() => { setSearch(''); setCategory(''); setSort('az'); setPage(1); }}
             aria-label="Limpiar filtros"
           >
@@ -404,9 +440,10 @@ function ProductsPageContent() {
               </div>
             )}
             {(modal.mode === 'edit' || modal.mode === 'create') && (
-              <ProductModalForm
+              // Usar el modal global/admin real
+              <ProductModal
                 open={true}
-                product={modal.product}
+                initialData={modal.product}
                 categories={categories}
                 onSave={handleSave}
                 onClose={() => setModal(null)}

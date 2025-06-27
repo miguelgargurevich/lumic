@@ -145,4 +145,52 @@ export const products: Product[] = [
     stock: 20,
     description: "Set de soportes, trípodes y adaptadores para equipos de iluminación.",
   },
+  {
+    id: 10,
+    name: "Lámpara de Pie Escandinava",
+    category: "Luminarias",
+    price: 79.99,
+    images: [
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80"
+    ],
+    stock: 7,
+    description: "Lámpara de pie de estilo escandinavo, madera natural y pantalla textil blanca.",
+  },
+  {
+    id: 11,
+    name: "Tira LED Inteligente WiFi",
+    category: "Tiras LED",
+    price: 39.99,
+    images: [
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"
+    ],
+    stock: 15,
+    description: "Tira LED controlable por app y voz, compatible con Alexa y Google Home.",
+  },
+  {
+    id: 12,
+    name: "Guirnalda Solar Exterior",
+    category: "Accesorios",
+    price: 22.99,
+    images: [
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=600&q=80"
+    ],
+    stock: 25,
+    description: "Guirnalda LED para exteriores, funciona con energía solar y sensor crepuscular.",
+  },
+  {
+    id: 13,
+    name: "Aro LED Selfie con Trípode",
+    category: "Aros LED",
+    price: 32.99,
+    images: [
+      "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80"
+    ],
+    stock: 14,
+    description: "Aro LED para selfies y videollamadas, incluye trípode ajustable y control de temperatura de color.",
+  },
 ];
