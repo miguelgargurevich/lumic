@@ -5,6 +5,7 @@ import { CartProvider } from "@/context/CartContext";
 import Navbar from "@/components/ui/Navbar";
 import { Toaster } from "sonner";
 import Footer from "@/components/ui/Footer";
+import CookieConsent from "@/components/ui/CookieConsent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -74,6 +75,7 @@ export default function RootLayout({
           <Toaster position="top-right" richColors />
           <Navbar />
           {children}
+          <CookieConsent />
           {/* Footer moderno con redes sociales */}
           <Footer />
         </CartProvider>

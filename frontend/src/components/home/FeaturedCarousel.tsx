@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import type { Product } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
-import ProductModal from "@/components/catalog/ProductModal";
+import { ShoppingCart } from "lucide-react";
 
 interface FeaturedCarouselProps {
   products: Product[];
+  onViewProduct?: (product: Product) => void;
 }
 
-export default function FeaturedCarousel({ products }: FeaturedCarouselProps) {
+export default function FeaturedCarousel({ products, onViewProduct }: FeaturedCarouselProps) {
   // Limitar a máximo 10 productos
   const featured = products.slice(0, 10);
   const [idx, setIdx] = useState(0);
@@ -79,25 +80,14 @@ export default function FeaturedCarousel({ products }: FeaturedCarouselProps) {
                 <p className="text-muted-foreground mb-2 text-base sm:text-lg line-clamp-3 max-w-md">{featured[idx].description}</p>
                 <span className="text-primary font-bold text-2xl mb-4 block">${featured[idx].price.toFixed(2)}</span>
                 <button
-                  className="inline-block px-6 py-2 rounded-full bg-primary text-white font-semibold shadow hover:bg-primary/90 transition-all text-base mt-2"
-                  onClick={() => setModalOpen(true)}
+                  className="inline-block px-6 py-2 rounded-full bg-primary text-white font-semibold shadow hover:bg-primary/90 transition-all text-base mt-2 animate-bounce-on-hover"
+                  onClick={() => onViewProduct ? onViewProduct(featured[idx]) : setModalOpen(true)}
                 >
-                  Ver Detalle
+                  Ver detalle
                 </button>
               </div>
             </motion.div>
           </AnimatePresence>
-          {modalOpen && (
-            <ProductModal
-              open={modalOpen}
-              onClose={() => setModalOpen(false)}
-              name={featured[idx].name}
-              price={featured[idx].price}
-              image={featured[idx].images[0]}
-              description={featured[idx].description}
-              isAdmin={isAdmin}
-            />
-          )}
         </div>
         <button
           className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 text-primary border-2 border-primary rounded-full w-12 h-12 flex items-center justify-center text-2xl shadow-lg hover:bg-primary hover:text-white transition z-10"

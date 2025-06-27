@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CartButton from "@/components/cart/CartButton";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart, User } from "lucide-react";
 import Image from "next/image";
 
 const navLinks = [
@@ -58,14 +58,15 @@ export default function Navbar() {
 				</ul>
 			</div>
 			<div className="flex items-center gap-2 sm:gap-4">
-				{role !== "admin" && <CartButton />}
+				<CartButton iconOnly />
 				{/* Botón Login solo visible en desktop */}
 				{!role && (
 					<Link
 						href="/login"
-						className="px-4 py-2 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90 transition-all text-sm hidden md:inline-block"
+						className="px-3 py-2 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90 transition-all text-sm hidden md:inline-flex items-center justify-center animate-bounce-on-hover"
+						aria-label="Iniciar sesión"
 					>
-						Login
+						<User size={22} className="transition-transform group-hover:scale-110" />
 					</Link>
 				)}
 				{/* Menú usuario solo visible en desktop */}
@@ -140,10 +141,11 @@ export default function Navbar() {
 								<li>
 									<Link
 										href="/login"
-										className="px-4 py-2 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90 transition-all text-sm block text-center"
+										className="px-4 py-2 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90 transition-all text-sm block text-center flex items-center justify-center gap-2 animate-bounce-on-hover"
 										onClick={() => setOpen(false)}
+										aria-label="Iniciar sesión"
 									>
-										Login
+										<User size={22} className="transition-transform group-hover:scale-110" />
 									</Link>
 								</li>
 							)}

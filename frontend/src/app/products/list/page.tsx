@@ -126,11 +126,7 @@ function ProductsPageContent() {
         <h1 className="text-3xl sm:text-5xl font-extrabold text-primary mb-4 mt-4 sm:mb-8 sm:mt-8 text-center drop-shadow-lg">
 				Bienvenido al Catálogo Lumic
 			</h1>
-			<p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-2xl text-center px-4">
-				Descubre la mejor selección de productos de iluminación para cada
-				necesidad. Elige una categoría y explora opciones modernas, eficientes
-				y con la mejor calidad. ¡Haz brillar tus espacios con Lumic!
-			</p>
+			
       </section>
 
       <div className="flex justify-between items-center mb-8 gap-4 px-2 sm:px-6">
@@ -428,15 +424,13 @@ function ProductsPageContent() {
                   <div className="mb-1"><b>Stock:</b> {modal.product.stock}</div>
                   <div className="mb-1 col-span-2"><b>Descripción:</b> {modal.product.description}</div>
                 </div>
-                {!isAdmin && (
-                  <button
-                    className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-bold shadow-md hover:bg-primary/90 transition border border-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/40 inline-flex items-center gap-2 justify-center w-full text-base"
-                    onClick={() => modal.product && handleAddToCart(modal.product)}
-                  >
-                    <ShoppingCart className="w-5 h-5" />
-                    Agregar al carrito
-                  </button>
-                )}
+                <button
+                  className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-bold shadow-md hover:bg-primary/90 transition border border-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/40 inline-flex items-center gap-2 justify-center w-full text-base"
+                  onClick={() => modal.product && handleAddToCart(modal.product)}
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  Agregar al carrito
+                </button>
               </div>
             )}
             {(modal.mode === 'edit' || modal.mode === 'create') && (

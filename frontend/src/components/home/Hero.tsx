@@ -3,8 +3,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { products } from '@/data/products';
-import { ShieldCheck, Truck, LifeBuoy, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Truck, LifeBuoy, ArrowRight, ShoppingCart } from 'lucide-react';
 import FeaturedCarousel from "@/components/home/FeaturedCarousel";
+import { useState, useEffect } from "react";
+import type { Product } from "@/data/products";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
 
 // Nueva data de prueba para categorías (más moderna y realista)
 const categories = [
@@ -42,8 +47,64 @@ const categories = [
 	},
 ];
 
+// Carrusel simple de imágenes para el modal de detalle
+function ProductImageCarousel({ images }: { images: string[] }) {
+	const [idx, setIdx] = useState(0);
+	if (images.length === 0) return null;
+	return (
+		<div className="flex flex-col items-center mb-2">
+			<div className="relative w-full flex justify-center">
+				<Image
+					src={images[idx]}
+					alt={`Imagen ${idx + 1}`}
+					width={340}
+					height={240}
+					className="rounded-2xl object-cover aspect-video border-2 border-primary/20 shadow-lg"
+				/>
+				{images.length > 1 && (
+					<>
+						<button
+							className="absolute left-2 top-1/2 -translate-y-1/2 bg-primary/80 text-white rounded-full px-3 py-2 text-lg shadow hover:bg-primary"
+							onClick={() => setIdx(i => (i - 1 + images.length) % images.length)}
+							aria-label="Anterior"
+						>&lt;</button>
+						<button
+							className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary/80 text-white rounded-full px-3 py-2 text-lg shadow hover:bg-primary"
+							onClick={() => setIdx(i => (i + 1) % images.length)}
+							aria-label="Siguiente"
+						>&gt;</button>
+					</>
+				)}
+			</div>
+			{images.length > 1 && (
+				<div className="flex gap-1 mt-2">
+					{images.map((_, i) => (
+						<button
+							key={i}
+							className={`w-3 h-3 rounded-full border-2 ${i === idx ? 'bg-primary border-primary' : 'bg-gray-200 border-primary/30 hover:bg-primary/10'}`}
+							onClick={() => setIdx(i)}
+							aria-label={`Ir a imagen ${i + 1}`}
+						/>
+					))}
+				</div>
+			)}
+		</div>
+	);
+}
+
 export default function Hero() {
 	const featuredProducts = products.slice(0, 4);
+	const [modal, setModal] = useState<null | { mode: 'view', product: Product }>(null);
+	const { addToCart } = useCart();
+
+	function handleAddToCart(product: Product) {
+		addToCart({
+			name: product.name,
+			price: product.price,
+			image: product.images[0] || '',
+		});
+		toast.success("Producto agregado al carrito", { description: product.name });
+	}
 
 	return (
 		<>
@@ -135,7 +196,7 @@ export default function Hero() {
 						<h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold font-headline text-center mb-6 sm:mb-10 md:mb-14">
 							Productos Destacados
 						</h2>
-						<FeaturedCarousel products={featuredProducts} />
+						<FeaturedCarousel products={featuredProducts} onViewProduct={product => setModal({ mode: 'view', product })} />
 					</div>
 				</section>
 
@@ -231,6 +292,39 @@ export default function Hero() {
 						/>
 					</svg>
 				</a>
+
+				{/* Modal de detalle de producto */}
+				{modal && (
+					<div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+						<div className="bg-white/90 border border-primary/30 rounded-2xl shadow-2xl p-0 w-full max-w-lg relative overflow-hidden">
+							<button
+								className="absolute top-4 right-4 text-3xl text-primary bg-white/80 rounded-full w-10 h-10 flex items-center justify-center shadow hover:bg-primary/90 hover:text-white transition-all z-10"
+								onClick={() => setModal(null)}
+								aria-label="Cerrar"
+							>
+								&times;
+							</button>
+							<div className="p-8 pt-4 flex flex-col gap-2">
+								<h2 className="text-3xl font-extrabold mb-2 text-center text-primary drop-shadow">{modal.product.name}</h2>
+								{/* Carrusel de imágenes */}
+								<ProductImageCarousel images={modal.product.images} />
+								<div className="grid grid-cols-2 gap-2 mt-4 text-base">
+									<div className="mb-1"><b>Categoría:</b> {modal.product.category}</div>
+									<div className="mb-1"><b>Precio:</b> <span className="font-bold text-primary">${modal.product.price}</span></div>
+									<div className="mb-1"><b>Stock:</b> {modal.product.stock}</div>
+									<div className="mb-1 col-span-2"><b>Descripción:</b> {modal.product.description}</div>
+								</div>
+								<button
+									className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-bold shadow-md hover:bg-primary/90 transition border border-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/40 inline-flex items-center gap-2 justify-center w-full text-base"
+									onClick={() => handleAddToCart(modal.product)}
+								>
+									<ShoppingCart className="w-5 h-5" />
+									Agregar al carrito
+								</button>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 		</>
 	);
