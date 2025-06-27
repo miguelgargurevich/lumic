@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Bar, Pie, Line } from "react-chartjs-2";
 import { Chart, CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend, TimeScale, LineElement, PointElement } from "chart.js";
 
@@ -44,11 +44,6 @@ const ventasPorProducto = [
 		],
 	},
 ];
-const stocksBajos = [
-	{ nombre: "Colgante Moderno", stock: 3 },
-	{ nombre: "Foco Exterior", stock: 2 },
-];
-
 // Simulación de stock por producto (puedes reemplazar por datos reales)
 const stockPorProducto = [
 	{ nombre: "Lámpara LED", stock: 12 },
@@ -56,7 +51,6 @@ const stockPorProducto = [
 	{ nombre: "Colgante Moderno", stock: 3 },
 	{ nombre: "Foco Exterior", stock: 2 },
 ];
-
 // Calcular ventas totales por mes (simulado)
 const ventasPorMes = [
 	{ mes: "2025-01", total: 120 },
@@ -66,18 +60,6 @@ const ventasPorMes = [
 	{ mes: "2025-05", total: 170 },
 	{ mes: "2025-06", total: 240 },
 ];
-
-const barData = {
-	labels: ventasPorProducto.map((p) => p.nombre),
-	datasets: [
-		{
-			label: "Ventas por producto",
-			data: ventasPorProducto.map((p) => p.ventas),
-			backgroundColor: "#6366f1",
-		},
-	],
-};
-
 // Pie: distribución de ventas por producto
 const pieData = {
 	labels: ventasPorProducto.map((p) => p.nombre),
@@ -100,7 +82,6 @@ const barDataStock = {
 		},
 	],
 };
-
 const lineData = {
 	labels: ventasPorMes.map((v) => v.mes),
 	datasets: [
@@ -129,7 +110,7 @@ export default function AdminAnalytics() {
 		);
 	}
 
-	// Eliminar el filtrado por rango de fechas y usar ventas totales
+	// Usar ventas totales para más/menos vendido
 	const ventasPorRango = ventasPorProducto.map((p) => ({ nombre: p.nombre, total: p.ventas }));
 	const masVendido = ventasPorRango.reduce(
 		(max, p) => (p.total > max.total ? p : max),
@@ -177,13 +158,13 @@ export default function AdminAnalytics() {
 				</div>
 				<div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
 					<div className="flex-1 bg-green-50 rounded-xl shadow p-3 sm:p-6 flex flex-col items-center mb-2 sm:mb-0">
-						<h2 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2 text-green-700">Más vendido en el rango</h2>
+						<h2 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2 text-green-700">Más vendido</h2>
 						<div className="text-center text-lg sm:text-2xl font-bold text-green-700">
 							{masVendido.nombre} <span className="text-xs sm:text-base">({masVendido.total} ventas)</span>
 						</div>
 					</div>
 					<div className="flex-1 bg-red-50 rounded-xl shadow p-3 sm:p-6 flex flex-col items-center">
-						<h2 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2 text-red-700">Menos vendido en el rango</h2>
+						<h2 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2 text-red-700">Menos vendido</h2>
 						<div className="text-center text-lg sm:text-2xl font-bold text-red-700">
 							{menosVendido.nombre} <span className="text-xs sm:text-base">({menosVendido.total} ventas)</span>
 						</div>
