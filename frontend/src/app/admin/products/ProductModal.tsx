@@ -48,7 +48,7 @@ export default function ProductModal({ open, onClose, onSave, initialData, categ
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-all">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full relative border border-gray-200 animate-fade-in">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full relative border border-gray-200 animate-fade-in max-h-[90vh] overflow-y-auto sm:max-h-[80vh]">
         <button
           className="absolute top-4 right-4 text-gray-400 hover:text-primary text-3xl font-bold focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-full transition"
           onClick={onClose}
