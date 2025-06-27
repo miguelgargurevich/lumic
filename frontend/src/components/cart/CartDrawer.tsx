@@ -2,6 +2,7 @@
 import React from "react";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
+import { ShoppingCart } from "lucide-react";
 
 interface CartDrawerProps {
   open: boolean;
@@ -24,7 +25,10 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
         className={`w-full max-w-md h-full bg-white shadow-lg p-6 flex flex-col transform transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Carrito</h2>
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <ShoppingCart className="w-6 h-6 text-primary" />
+            Carrito
+          </h2>
           <button
             className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-primary border-2 border-primary shadow hover:bg-primary hover:text-white transition-all text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-primary/40"
             onClick={onClose}

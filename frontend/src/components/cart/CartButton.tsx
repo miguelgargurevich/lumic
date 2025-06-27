@@ -24,8 +24,8 @@ export default function CartButton() {
         }`}
         onClick={handleClick}
       >
-        <ShoppingCart size={20} />
-        <span>Carrito</span>
+        <ShoppingCart size={20} className="mr-1" />
+        <span className="font-semibold">Carrito</span>
         {count > 0 && (
           <span className="absolute -top-2 -right-2 bg-primary text-white rounded-full px-2 text-xs font-bold">
             {count}

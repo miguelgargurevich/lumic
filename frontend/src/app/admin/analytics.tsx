@@ -122,11 +122,11 @@ export default function AdminAnalytics() {
 	);
 
 	return (
-		<div className="max-w-5xl mx-auto px-2 sm:px-8 py-4">
+		<div className="w-full max-w-none px-2 sm:px-8 py-4">
 			<div className="flex flex-col gap-6 sm:gap-10">
-                <div className="bg-white rounded-2xl shadow-lg p-2 sm:p-6 flex flex-col justify-between items-center w-full overflow-x-auto">
+                <div className="bg-white border border-primary/10 shadow-2xl p-2 sm:p-8 my-3 w-full flex flex-col items-center rounded-2xl">
 					<h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Ventas totales por mes</h2>
-					<div className="w-full min-w-0 max-w-full sm:max-w-2xl mx-auto" style={{ minHeight: 220 }}>
+					<div className="w-full" style={{ minHeight: 220, boxSizing: 'border-box' }}>
 						<Line data={lineData} options={{
 							responsive: true,
 							maintainAspectRatio: false,
@@ -144,15 +144,15 @@ export default function AdminAnalytics() {
 						}} height={220} />
 					</div>
 				</div>
-				<div className="bg-white rounded-2xl shadow-lg p-2 sm:p-6 flex flex-col justify-between items-center w-full overflow-x-auto">
+				<div className="bg-white border border-primary/10 shadow-2xl p-2 sm:p-8 my-3 w-full flex flex-col items-center rounded-2xl">
 					<h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Distribución de ventas por producto</h2>
-					<div className="w-full min-w-0 max-w-full sm:max-w-md mx-auto" style={{ minHeight: 180 }}>
+					<div className="w-full" style={{ minHeight: 180, boxSizing: 'border-box' }}>
 						<Pie data={pieData} options={{ maintainAspectRatio: false, responsive: true, aspectRatio: 1.2, plugins: { legend: { labels: { font: { size: 12 } } } } }} height={180} />
 					</div>
 				</div>
-				<div className="bg-white rounded-2xl shadow-lg p-2 sm:p-6 flex flex-col justify-between items-center w-full overflow-x-auto">
+				<div className="bg-white border border-primary/10 shadow-2xl p-2 sm:p-8 my-3 w-full flex flex-col items-center rounded-2xl">
 					<h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Stock de productos</h2>
-					<div className="w-full min-w-0 max-w-full sm:max-w-md mx-auto" style={{ minHeight: 180 }}>
+					<div className="w-full" style={{ minHeight: 180, boxSizing: 'border-box' }}>
 						<Bar data={barDataStock} options={{ maintainAspectRatio: false, responsive: true, aspectRatio: 1.2, plugins: { legend: { labels: { font: { size: 12 } } } } }} height={180} />
 					</div>
 				</div>

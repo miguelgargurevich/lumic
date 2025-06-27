@@ -52,7 +52,7 @@ export default function ProductModalForm({ open, onClose, onSave, categories, pr
   if (!open) return null;
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-      <div className="bg-white/90 border border-primary/30 rounded-2xl shadow-2xl p-0 w-full max-w-lg relative overflow-hidden">
+      <div className="bg-white/90 border border-primary/30 rounded-2xl shadow-2xl w-full max-w-lg relative overflow-hidden flex flex-col max-h-[95vh]">
         <button
           className="absolute top-4 right-4 text-3xl text-primary bg-white/80 rounded-full w-10 h-10 flex items-center justify-center shadow hover:bg-primary/90 hover:text-white transition-all z-10"
           onClick={onClose}
@@ -60,8 +60,8 @@ export default function ProductModalForm({ open, onClose, onSave, categories, pr
         >
           &times;
         </button>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5 p-8 pt-4">
-          <h2 className="text-2xl font-bold mb-4 text-primary/90 text-center drop-shadow">{product ? 'Editar' : 'Nuevo'} producto</h2>
+        <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-5 p-4 sm:p-8 pt-4 overflow-y-auto">
+          <h2 className="text-2xl font-bold mb-2 sm:mb-4 text-primary/90 text-center drop-shadow">{product ? 'Editar' : 'Nuevo'} producto</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
               <label className="font-semibold">Nombre</label>
@@ -73,15 +73,18 @@ export default function ProductModalForm({ open, onClose, onSave, categories, pr
                 {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
               </select>
             </div>
-            <div className="flex flex-col gap-1">
-              <label className="font-semibold">Precio</label>
-              <input name="price" type="number" value={form.price} onChange={handleChange} placeholder="Precio" className="border-2 border-primary/30 rounded-xl px-4 py-2" required min={0} step={0.01} />
+            {/* Precio y Stock siempre en la misma línea */}
+            <div className="grid grid-cols-2 gap-4 col-span-1 sm:col-span-2">
+              <div className="flex flex-col gap-1">
+                <label className="font-semibold">Precio</label>
+                <input name="price" type="number" value={form.price} onChange={handleChange} placeholder="Precio" className="border-2 border-primary/30 rounded-xl px-4 py-2" required min={0} step={0.01} />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="font-semibold">Stock</label>
+                <input name="stock" type="number" value={form.stock} onChange={handleChange} placeholder="Stock disponible" className="border-2 border-primary/30 rounded-xl px-4 py-2" required min={0} />
+              </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <label className="font-semibold">Stock</label>
-              <input name="stock" type="number" value={form.stock} onChange={handleChange} placeholder="Stock disponible" className="border-2 border-primary/30 rounded-xl px-4 py-2" required min={0} />
-            </div>
-            <div className="flex flex-col gap-1 sm:col-span-2">
+            <div className="flex flex-col gap-1 sm:col-span-2 col-span-1">
               <label className="font-semibold">Descripción</label>
               <textarea name="description" value={form.description} onChange={handleChange} placeholder="Descripción detallada del producto" className="border-2 border-primary/30 rounded-xl px-4 py-2" rows={3} />
             </div>
@@ -125,11 +128,14 @@ export default function ProductModalForm({ open, onClose, onSave, categories, pr
               </div>
             </div>
           </div>
-          <div className="flex gap-2 justify-end mt-4">
-            <button type="button" className="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 font-semibold shadow" onClick={onClose}>Cancelar</button>
-            <button type="submit" className="px-4 py-2 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90">Guardar</button>
-          </div>
+          {/* Espacio para que los botones no queden tapados */}
+          <div className="h-2 sm:h-0" />
         </form>
+        {/* Botones siempre visibles en la parte inferior en mobile */}
+        <div className="flex gap-2 justify-end p-4 border-t bg-white/95 sticky bottom-0 z-20">
+          <button type="button" className="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 font-semibold shadow" onClick={onClose}>Cancelar</button>
+          <button type="submit" form="" className="px-4 py-2 rounded-xl bg-primary text-white font-bold shadow hover:bg-primary/90">Guardar</button>
+        </div>
       </div>
     </div>
   );

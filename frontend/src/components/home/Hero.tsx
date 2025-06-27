@@ -10,7 +10,7 @@ import FeaturedCarousel from "@/components/home/FeaturedCarousel";
 const categories = [
 	{
 		name: 'Aros LED',
-		href: '/products?category=Aro+LED',
+		href: '/products/list?category=Aros%20LED',
 		imageSrc:
 			'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80',
 		imageHint: 'aro led moderno',
@@ -18,15 +18,23 @@ const categories = [
 	},
 	{
 		name: 'Luminarias',
-		href: '/products?category=Luminaria',
+		href: '/products/list?category=Luminarias',
 		imageSrc:
 			'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
 		imageHint: 'luminaria de diseño',
 		description: 'Diseños modernos para cada ambiente.',
 	},
 	{
+		name: 'Tiras LED',
+		href: '/products/list?category=Tiras%20LED',
+		imageSrc:
+			'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
+		imageHint: 'tiras led multicolor',
+		description: 'Tiras LED multicolor y blancas para ambientar cualquier espacio.',
+	},
+	{
 		name: 'Accesorios',
-		href: '/products?category=Accesorio',
+		href: '/products/list?category=Accesorios',
 		imageSrc:
 			'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80',
 		imageHint: 'accesorios de iluminación',
@@ -61,7 +69,7 @@ export default function Hero() {
 							de la mejor iluminación.
 						</p>
 						<Link
-							href="/products"
+							href="/products/catalog-welcome"
 							className="inline-block px-6 sm:px-10 py-3 sm:py-4 rounded-full bg-primary text-white font-bold text-base sm:text-lg shadow-lg hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary/40 transition-all animate-fade-in-up delay-200 animate-pulse hover:scale-105 active:scale-95"
 							tabIndex={0}
 							aria-label="Explorar productos Lumic"

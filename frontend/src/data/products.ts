@@ -12,7 +12,7 @@ export const products: Product[] = [
   {
     id: 1,
     name: "Lámpara Moderna",
-    category: "Lámparas",
+    category: "Luminarias",
     price: 49.99,
     images: [
       "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
@@ -42,7 +42,7 @@ export const products: Product[] = [
   {
     id: 3,
     name: "Aplique Minimalista",
-    category: "Apliques",
+    category: "Luminarias",
     price: 34.99,
     images: [
       "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=600&q=80",
@@ -57,7 +57,7 @@ export const products: Product[] = [
   {
     id: 4,
     name: "Guirnalda Decorativa",
-    category: "Decoración",
+    category: "Accesorios",
     price: 15.99,
     images: [
       "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
@@ -72,7 +72,7 @@ export const products: Product[] = [
   {
     id: 5,
     name: "Lámpara de Escritorio",
-    category: "Lámparas",
+    category: "Luminarias",
     price: 29.99,
     images: [
       "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",

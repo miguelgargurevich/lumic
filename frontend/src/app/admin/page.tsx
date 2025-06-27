@@ -2,7 +2,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAdminGuard } from "./guard";
-import LogoutButton from "@/components/ui/LogoutButton";
 import dynamic from "next/dynamic";
 
 const AdminAnalytics = dynamic(() => import("./analytics"), { ssr: false });
@@ -33,33 +32,22 @@ export default function AdminPage() {
               </span>
             )}
           </div>
-          <div className="grid grid-cols-1 gap-6">
-            <div className="bg-primary/10 rounded-xl p-6 flex flex-col items-center shadow">
-              <span className="text-3xl font-bold text-primary mb-2">3</span>
-              <span className="font-semibold">Secciones clave</span>
-              <span className="text-xs text-muted-foreground mt-1 text-center">
-                Gestión de productos, pedidos y usuarios
-              </span>
-            </div>
-            <div className="bg-green-100 rounded-xl p-6 flex flex-col items-center shadow">
-              <span className="text-3xl font-bold text-green-600 mb-2">Analítica</span>
-              <span className="font-semibold">Panel visual</span>
-              <span className="text-xs text-muted-foreground mt-1 text-center">
-                Gráficos y métricas de ventas y stock
-              </span>
-            </div>
-            <div className="bg-yellow-100 rounded-xl p-6 flex flex-col items-center shadow">
-              <span className="text-3xl font-bold text-yellow-600 mb-2">Admin</span>
-              <span className="font-semibold">Herramientas</span>
-              <span className="text-xs text-muted-foreground mt-1 text-center">
-                Acceso exclusivo para administradores
-              </span>
-            </div>
-          </div>
           <ul className="space-y-4 mt-8">
             <li className="border-b pb-4">
-              <span className="font-semibold">Gestión de productos</span>
-              <p className="text-muted-foreground text-sm">Agregar, editar o eliminar productos del catálogo.</p>
+              <a
+                href="/products/list"
+                className="group block font-semibold text-primary hover:text-primary-foreground hover:bg-primary/20 transition-colors duration-300 relative rounded-xl px-2 py-1"
+              >
+                <span className="inline-block transition-transform group-hover:translate-x-1 group-hover:scale-105">
+                  Gestión de productos
+                </span>
+                <span className="block text-muted-foreground text-sm group-hover:text-primary/90 group-hover:underline transition-all">
+                  Agregar, editar o eliminar productos del catálogo.
+                </span>
+                <span className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all text-primary">
+                  &rarr;
+                </span>
+              </a>
             </li>
             <li className="border-b pb-4">
               <span className="font-semibold">Pedidos</span>
@@ -70,12 +58,9 @@ export default function AdminPage() {
               <p className="text-muted-foreground text-sm">Administrar cuentas y permisos de usuarios.</p>
             </li>
           </ul>
-          <div className="mt-8">
-            <LogoutButton />
-          </div>
         </aside>
         {/* Panel derecho: analíticas y gráficos */}
-        <section className="flex-1 p-8 md:p-12 bg-white min-h-[600px] flex flex-col justify-center">
+        <section className="flex-1 w-full min-w-0 p-0 md:p-12 bg-white min-h-[600px] flex flex-col justify-center overflow-x-visible">
           <AdminAnalytics />
         </section>
       </div>

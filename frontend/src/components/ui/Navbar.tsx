@@ -8,7 +8,7 @@ import Image from "next/image";
 
 const navLinks = [
 	{ href: "/", label: "Inicio", show: () => true },
-	{ href: "/products", label: "Catálogo", show: () => true },
+	{ href: "/products/catalog-welcome", label: "Catálogo", show: () => true },
 	{ href: "/admin", label: "Analítica", show: (role: string) => role === "admin" },
 ];
 
