@@ -9,6 +9,8 @@ import type { ProductCardAction } from "@/components/catalog/ProductCard";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Filter, X } from "lucide-react";
 import ProductModalForm from "../ProductModalForm";
+import { ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
 
 const categories = Array.from(new Set(productsData.map(p => p.category)));
 const sortOptions = [
@@ -40,7 +42,6 @@ function ProductsPageContent() {
   const { addToCart } = useCart();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [showCartMsg, setShowCartMsg] = useState<{name: string}|null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
   // Sincroniza el estado con los query params
@@ -102,8 +103,7 @@ function ProductsPageContent() {
       price: product.price,
       image: product.images[0] || '',
     });
-    setShowCartMsg({ name: product.name });
-    setTimeout(() => setShowCartMsg(null), 2500);
+    toast.success("Producto agregado al carrito", { description: product.name });
   }
 
   // Detectar rol real desde localStorage
@@ -126,10 +126,10 @@ function ProductsPageContent() {
       <section className="relative bg-gradient-to-br from-primary/10 to-white rounded-3xl shadow-xl border border-primary/10 p-6 sm:p-10 mb-8 flex flex-col items-center text-center w-full max-w-none mx-0 overflow-hidden">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-primary mb-4 drop-shadow-lg tracking-tight">Catálogo de productos</h1>
         <p className="text-lg sm:text-xl text-muted-foreground mb-2 font-medium">
-          Explora nuestra selección de productos de iluminación: aros LED, luminarias, tiras LED y accesorios. Utiliza los filtros para encontrar el producto ideal según tus necesidades y presupuesto.
+          Explora nuestra selección de productos de iluminación: aros LED, luminarias, tiras LED y accesorios. 
         </p>
         <p className="text-base text-muted-foreground mb-2">
-          Puedes buscar por nombre, filtrar por categoría y ordenar por precio o alfabéticamente. Haz clic en cada producto para ver más detalles o agregarlo al carrito.
+          Utiliza los filtros para encontrar el producto ideal según tus necesidades y presupuesto. Haz clic en cada producto para ver más detalles o agregarlo al carrito.
         </p>
         <div className="absolute -top-10 -right-10 opacity-10 pointer-events-none select-none hidden sm:block">
           <svg width="180" height="180" viewBox="0 0 180 180" fill="none"><circle cx="90" cy="90" r="90" fill="#3B82F6" /></svg>
@@ -397,6 +397,13 @@ function ProductsPageContent() {
                   <div className="mb-1"><b>Stock:</b> {modal.product.stock}</div>
                   <div className="mb-1 col-span-2"><b>Descripción:</b> {modal.product.description}</div>
                 </div>
+                <button
+                  className="mt-6 px-6 py-2 rounded-lg bg-primary text-white font-bold shadow-md hover:bg-primary/90 transition border border-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/40 inline-flex items-center gap-2 justify-center w-full text-base"
+                  onClick={() => modal.product && handleAddToCart(modal.product)}
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  Agregar al carrito
+                </button>
               </div>
             )}
             {(modal.mode === 'edit' || modal.mode === 'create') && (
@@ -409,19 +416,6 @@ function ProductsPageContent() {
               />
             )}
           </div>
-        </div>
-      )}
-      {/* Mostrar feedback de carrito */}
-      {cart.length > 0 && (
-        <div className="fixed bottom-6 right-6 z-50 bg-primary text-white px-6 py-3 rounded-full shadow-lg animate-fade-in-up">
-          {cart.length} producto{cart.length > 1 ? 's' : ''} en el carrito
-        </div>
-      )}
-      {/* Mensaje flotante de agregado al carrito */}
-      {showCartMsg && (
-        <div className="fixed bottom-6 right-6 z-50 bg-green-500/80 text-white px-6 py-3 rounded-full shadow-lg backdrop-blur-sm animate-fade-in-up flex items-center gap-2">
-          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-          <span>Producto <b>{showCartMsg.name}</b> agregado al carrito</span>
         </div>
       )}
       {/* Botón flotante para agregar producto en mobile solo para admin */}

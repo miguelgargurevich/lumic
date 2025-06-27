@@ -84,14 +84,9 @@ export default function CatalogWelcome() {
 							</p>
 							<Link
 								href={cat.href}
-								scroll={false}
-								prefetch={false}
+								scroll={true}
+								prefetch={true}
 								className="inline-block px-6 py-2 rounded-lg bg-primary text-white font-semibold shadow hover:bg-primary/90 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 animate-fade-in"
-								onClick={() => {
-									if (typeof window !== "undefined") {
-										window.location.href = cat.href;
-									}
-								}}
 							>
 								Ver productos
 							</Link>
