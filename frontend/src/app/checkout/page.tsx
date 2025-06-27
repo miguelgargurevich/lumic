@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ShoppingCart, User, MapPin, CreditCard, Mail } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import Image from "next/image";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -54,7 +55,8 @@ export default function CheckoutPage() {
                   <ul className="divide-y mb-2">
                     {cart.map((item, i) => (
                       <li key={i} className="py-2 flex items-center gap-3">
-                        <img src={item.image} alt={item.name} className="w-12 h-12 rounded object-contain border border-primary/20 bg-white" />
+                        {/* Reemplazar <img> por <Image /> de next/image para optimización */}
+                        <Image src={item.image} alt={item.name} width={48} height={48} className="rounded object-contain border border-primary/20 bg-white" />
                         <div className="flex-1">
                           <div className="font-semibold text-base line-clamp-1">{item.name}</div>
                           <div className="text-xs text-muted-foreground">Cantidad: {item.quantity}</div>

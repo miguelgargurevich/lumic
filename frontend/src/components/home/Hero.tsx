@@ -5,9 +5,8 @@ import Image from 'next/image';
 import { products } from '@/data/products';
 import { ShieldCheck, Truck, LifeBuoy, ArrowRight, ShoppingCart } from 'lucide-react';
 import FeaturedCarousel from "@/components/home/FeaturedCarousel";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { Product } from "@/data/products";
-import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 

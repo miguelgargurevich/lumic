@@ -46,7 +46,7 @@ export default function ProductModal({ open, onClose, onSave, initialData, categ
       }));
       toast.success("Producto guardado correctamente", { description: name });
       onClose();
-    } catch (err) {
+    } catch {
       toast.error("Error al guardar el producto");
     } finally {
       setSaving(false);

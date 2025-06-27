@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import type { Product } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart } from "lucide-react";
 
 interface FeaturedCarouselProps {
   products: Product[];
@@ -13,8 +12,6 @@ export default function FeaturedCarousel({ products, onViewProduct }: FeaturedCa
   // Limitar a máximo 10 productos
   const featured = products.slice(0, 10);
   const [idx, setIdx] = useState(0);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   // Autoplay functionality
   useEffect(() => {
@@ -28,19 +25,6 @@ export default function FeaturedCarousel({ products, onViewProduct }: FeaturedCa
   useEffect(() => {
     if (idx >= featured.length) setIdx(0);
   }, [featured.length, idx]);
-
-  useEffect(() => {
-    function syncRole() {
-      setIsAdmin(typeof window !== "undefined" && localStorage.getItem("lumic_role") === "admin");
-    }
-    syncRole();
-    window.addEventListener("storage", syncRole);
-    window.addEventListener("lumic_role_changed", syncRole);
-    return () => {
-      window.removeEventListener("storage", syncRole);
-      window.removeEventListener("lumic_role_changed", syncRole);
-    };
-  }, []);
 
   if (featured.length === 0) return null;
 
@@ -81,7 +65,7 @@ export default function FeaturedCarousel({ products, onViewProduct }: FeaturedCa
                 <span className="text-primary font-bold text-2xl mb-4 block">${featured[idx].price.toFixed(2)}</span>
                 <button
                   className="inline-block px-6 py-2 rounded-full bg-primary text-white font-semibold shadow hover:bg-primary/90 transition-all text-base mt-2 animate-bounce-on-hover"
-                  onClick={() => onViewProduct ? onViewProduct(featured[idx]) : setModalOpen(true)}
+                  onClick={() => onViewProduct ? onViewProduct(featured[idx]) : null}
                 >
                   Ver detalle
                 </button>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CartButton from "@/components/cart/CartButton";
 import { useEffect, useState } from "react";
-import { Menu, X, ShoppingCart, User } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import Image from "next/image";
 
 const navLinks = [
